@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use AlphaCert in your research to validate predicted protein structures, audit pLDDT/PAE metrics, or certify docking readiness, please cite it as below."
+authors:
+  - family-names: "Monreal-Hernández"
+    given-names: "Andre"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+title: "AlphaCert: An Open-Source Toolkit for Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification of Predicted Protein Structures"
+version: 1.0.0
+date-released: 2026-08-31
+url: "https://github.com/amonreal/alphacert"
+repository-code: "https://github.com/amonreal/alphacert"
+keywords:
+  - "AlphaFold"
+  - "AlphaFold2"
+  - "AlphaFold3"
+  - "ColabFold"
+  - "ESMFold"
+  - "pLDDT"
+  - "PAE"
+  - "structural biology"
+  - "protein structure"
+  - "Ramachandran"
+  - "reproducibility"
+license: MIT

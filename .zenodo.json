@@ -1,0 +1,26 @@
+{
+  "title": "AlphaCert: An Open-Source Toolkit for Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification of Predicted Protein Structures",
+  "description": "An open-source scientific toolkit for rigorous quality assurance, pLDDT confidence categorization, 2D Predicted Aligned Error (PAE) matrix analysis, stereochemical clash detection, Ramachandran dihedral distributions, and downstream application certification (Docking-Ready, MD-Ready, Complex-Interface-Valid) for structures predicted by AlphaFold2, AlphaFold-Multimer, AlphaFold3, ColabFold, and ESMFold.",
+  "creators": [
+    {
+      "name": "Monreal-Hernández, Andre",
+      "affiliation": "Doctoral Research Group"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "AlphaFold",
+    "AlphaFold2",
+    "AlphaFold3",
+    "ColabFold",
+    "ESMFold",
+    "pLDDT",
+    "PAE matrix",
+    "Ramachandran",
+    "protein structure prediction",
+    "computational structural biology",
+    "scientific software"
+  ],
+  "upload_type": "software"
+}

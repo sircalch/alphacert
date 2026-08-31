@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alphacert"
+version = "1.0.0"
+description = "Automated Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification for Predicted Protein Structures (AlphaFold2/3, ColabFold, ESMFold)"
+readme = "README.md"
+authors = [
+    { name = "Andre Monreal-Hernández", email = "amonreal@example.com" }
+]
+license = { text = "MIT" }
+keywords = [
+    "alphafold",
+    "alphafold2",
+    "alphafold3",
+    "colabfold",
+    "esmfold",
+    "plddt",
+    "predicted-aligned-error",
+    "pae",
+    "protein-structure",
+    "structural-biology",
+    "ramachandran",
+    "docking-validation",
+    "reproducibility"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent"
+]
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.20.0",
+    "scipy>=1.7.0",
+    "pandas>=1.3.0",
+    "matplotlib>=3.5.0",
+    "jinja2>=3.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "build>=0.10.0",
+    "twine>=4.0.0"
+]
+
+[project.scripts]
+alphacert = "alphacert.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/amonreal/alphacert"
+Documentation = "https://github.com/amonreal/alphacert#readme"
+Repository = "https://github.com/amonreal/alphacert.git"
+"Bug Tracker" = "https://github.com/amonreal/alphacert/issues"
+Changelog = "https://github.com/amonreal/alphacert/blob/main/CHANGELOG.md"
