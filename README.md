@@ -1,6 +1,6 @@
-# AlphaCert
+﻿# AlphaCert
 
-[![CI](https://github.com/amonreal/alphacert/actions/workflows/test.yml/badge.svg)](https://github.com/amonreal/alphacert/actions)
+[![CI](https://github.com/sircalch/alphacert/actions/workflows/test.yml/badge.svg)](https://github.com/sircalch/alphacert/actions)
 [![PyPI version](https://img.shields.io/pypi/v/alphacert.svg?color=blue)](https://pypi.org/project/alphacert/)
 [![Python versions](https://img.shields.io/pypi/pyversions/alphacert.svg)](https://pypi.org/project/alphacert/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -75,7 +75,7 @@ pip install alphacert
 
 ### From Source
 ```bash
-git clone https://github.com/amonreal/alphacert.git
+git clone https://github.com/sircalch/alphacert.git
 cd alphacert
 pip install -e .[dev]
 ```
@@ -147,7 +147,7 @@ If you use AlphaCert in your research, please cite:
   year = {2026},
   version = {1.0.0},
   publisher = {Zenodo},
-  url = {https://github.com/amonreal/alphacert}
+  url = {https://github.com/sircalch/alphacert}
 }
 ```
 
@@ -156,3 +156,4 @@ If you use AlphaCert in your research, please cite:
 ## License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
