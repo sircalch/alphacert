@@ -4,7 +4,7 @@ Certification for Predicted Protein Structures (AlphaFold2/3, ColabFold, ESMFold
 """
 
 __version__ = "1.0.0"
-__author__ = "Andre Monreal-Hernández"
+__author__ = "Andres Monreal-Hernández"
 __license__ = "MIT"
 
 from alphacert.core.plddt import (
