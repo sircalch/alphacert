@@ -67,3 +67,7 @@ Documentation = "https://github.com/amonreal/alphacert#readme"
 Repository = "https://github.com/amonreal/alphacert.git"
 "Bug Tracker" = "https://github.com/amonreal/alphacert/issues"
 Changelog = "https://github.com/amonreal/alphacert/blob/main/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+include = ["alphacert*"]
+
