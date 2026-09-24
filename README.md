@@ -69,8 +69,10 @@ Rather than blindly relying on predicted models for molecular docking, molecular
 ## Installation
 
 ### From PyPI
+> **Note:** PyPI release pending. Until then, install from the tagged GitHub release:
+
 ```bash
-pip install alphacert
+pip install "git+https://github.com/sircalch/alphacert@v1.0.0"
 ```
 
 ### From Source
