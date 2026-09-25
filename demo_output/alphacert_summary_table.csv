@@ -1,5 +1,5 @@
 Parameter,Value,Status
-Target Protein & Engine,Target Kinase Domain (AlphaFold2 v2.3),PASS
+Target Protein & Engine,Target Kinase Domain (SYNTHETIC DEMO DATA (AlphaFold2-like model; not a real prediction)),PASS
 Total Residues,320 residues,PASS
 Mean pLDDT,89.56 (Median: 93.00),PASS
 Very High Confidence (>90),85.0%,PASS

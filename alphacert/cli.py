@@ -40,7 +40,7 @@ def run_demo(output_dir: str = "alphacert_demo_output"):
     
     metadata = {
         "name": "Target Kinase Domain",
-        "engine": "AlphaFold2 v2.3",
+        "engine": "SYNTHETIC DEMO DATA (AlphaFold2-like model; not a real prediction)",
         "uniprot_id": "P00533 (EGFR-like)",
         "prediction_date": "2026-08-31"
     }
