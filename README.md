@@ -24,9 +24,9 @@ Rather than blindly relying on predicted models for molecular docking, molecular
     - 🟠 **Very Low Confidence ($< 50$)**: Intrinsically Disordered Regions (IDRs).
 - 🧩 **2D Predicted Aligned Error (PAE) Matrix Audit**:
   - Identifies rigid domains by clustering the PAE matrix with Croll's greedy-modularity method (the method used by ChimeraX and AlphaFold DB; cutoff 5 Å). Disordered clusters with mean pLDDT < 70 are excluded.
-  - Evaluates inter-domain hinge flexibility and detects artificial inter-chain contacts in multimer complexes ($\text{ipTM} \ge 0.60$, $\text{iPAE} < 8$ Å).
+  - Evaluates multimer interfaces with ipTM as the primary criterion (> 0.8 confident, 0.6–0.8 grey zone, < 0.6 likely failed). The symmetrised inter-chain PAE is used when no ipTM is available.
 - 📐 **Stereochemical & Geometry Quality**:
-  - Heavy-atom steric clashscore ($d_{ij} < r_{\text{vdw}, i} + r_{\text{vdw}, j} - 0.40$ Å).
+  - Heavy-atom clash score: non-bonded pairs (more than 3 covalent bonds apart) with $d_{ij} < r_{\text{vdw}, i} + r_{\text{vdw}, j} - 0.40$ Å, per 1000 heavy atoms. This is a proxy without hydrogens, not the MolProbity clashscore.
   - Ramachandran dihedral distribution ($\phi, \psi$ Favored $\ge 88\%$, Outliers $< 3\%$) using approximate rectangular regions, not the MolProbity Top8000 contours. For publication-grade figures, use MolProbity or PHENIX.
   - Non-proline *cis*-peptide bond identification.
 - 🎯 **Target Application Readiness Certification**:
