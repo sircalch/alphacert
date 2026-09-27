@@ -14,7 +14,7 @@ def test_dihedral_calc():
     p4 = np.array([0.0, 1.0, 1.0])
     
     ang = _calc_dihedral(p1, p2, p3, p4)
-    assert np.isclose(abs(ang), 90.0, atol=1e-3)
+    assert np.isclose(ang, -90.0, atol=1e-3)   # IUPAC sign convention (checked against gemmi)
 
 
 def test_ramachandran_classification():

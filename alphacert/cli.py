@@ -150,9 +150,26 @@ def run_assess(args):
     }
     
     # Parse pocket indices if given as comma-separated string
+    # Pocket residues are given as author residue numbers ("248" or "A:248") and mapped to positions
     pocket_idx = None
     if args.pocket:
-        pocket_idx = [int(x.strip()) for x in args.pocket.split(",") if x.strip().isdigit()]
+        lookup = {}
+        for pos, r in enumerate(struct_data["backbone_atoms"]):
+            lookup.setdefault(str(r["seq"]), pos)
+            lookup[f"{r['chain']}:{r['seq']}"] = pos
+        pocket_idx, missing = [], []
+        for tok in (t.strip() for t in args.pocket.split(",")):
+            if not tok:
+                continue
+            if tok in lookup:
+                pocket_idx.append(lookup[tok])
+            else:
+                missing.append(tok)
+        if missing:
+            print(f"[Warning] Pocket residues not found in the structure: {', '.join(missing)}", file=sys.stderr)
+        if not pocket_idx:
+            print("[Error] None of the --pocket residues exist in the structure.", file=sys.stderr)
+            sys.exit(1)
 
     print("  -> Performing structure validation and downstream application certification...")
     report = assess_alphafold_quality(
@@ -226,7 +243,7 @@ def main():
     assess_parser.add_argument("-o", "--output", default="alphacert_output", help="Directory for output report and assets (default: alphacert_output)")
     assess_parser.add_argument("--name", default=None, help="Protein name / target description")
     assess_parser.add_argument("--engine", default="AlphaFold2", help="Prediction engine (AlphaFold2, AlphaFold3, ColabFold, ESMFold)")
-    assess_parser.add_argument("--pocket", default=None, help="Comma-separated residue indices of binding pocket (e.g. '45,46,47,120')")
+    assess_parser.add_argument("--pocket", default=None, help="Comma-separated residue numbers of the binding pocket as in the structure file, optionally with chain (e.g. '45,46,A:120')")
 
     # Demo command
     demo_parser = subparsers.add_parser("demo", help="Run AlphaCert on a benchmark AlphaFold2 kinase model")

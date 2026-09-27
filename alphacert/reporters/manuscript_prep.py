@@ -4,6 +4,8 @@ Manuscript Methods text generator, LaTeX summary tables, and BibTeX citations fo
 
 from typing import Dict, Any, Optional
 import os
+
+from alphacert import __version__
 import pandas as pd
 from alphacert.core.scoring import AlphaFoldValidationReport
 
@@ -92,7 +94,7 @@ def generate_alphacert_manuscript_assets(
 
     full_methods = (
         f"Three-dimensional structural models of {prot_str} were generated using {engine_str}. "
-        f"Model reliability, per-residue confidence (pLDDT), domain rigidity, and stereochemistry were systematically audited using AlphaCert v1.0.0 (Monreal-Hernández, 2026). "
+        f"Model reliability, per-residue confidence (pLDDT), domain rigidity, and stereochemistry were systematically audited using AlphaCert v{__version__} (Monreal-Hernández, 2026). "
         f"The model achieved an average pLDDT of {pld.mean_plddt:.1f} with {pld.frac_very_high_90*100:.1f}% in the very high confidence band (> 90) and {pld.frac_confident_70_90*100:.1f}% in the confident band (70-90). "
         f"{pae_str}{geom_str}"
         f"Downstream modeling suitability was certified as: {report.docking_readiness['status']} for molecular docking and {report.md_readiness['status']} for molecular dynamics."

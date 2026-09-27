@@ -81,7 +81,8 @@ def assess_alphafold_quality(
     pae_res = None
     if pae_matrix is not None:
         pae_res = evaluate_pae_matrix(
-            pae_matrix, chain_boundaries=chain_boundaries, iptm_score=iptm_score
+            pae_matrix, chain_boundaries=chain_boundaries, iptm_score=iptm_score,
+            plddt=plddt_values
         )
         statuses.append(pae_res.status)
         if pae_res.status != "PASS":
