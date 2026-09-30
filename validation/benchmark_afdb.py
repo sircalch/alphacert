@@ -18,7 +18,7 @@ import json
 import os
 import subprocess
 import sys
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
 import pandas as pd
@@ -131,7 +131,17 @@ def analyse(acc, cache):
     return row
 
 
+def safe(acc, cache):
+    try:
+        return analyse(acc, cache)
+    except Exception as e:
+        return {"acc": acc, "ok": False, "reason": f"{type(e).__name__}: {e}"[:150]}
+
+
 def main():
+    if os.name == "nt":                       # keep the machine awake while the benchmark runs
+        import ctypes
+        ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | 0x00000001)
     ap = argparse.ArgumentParser()
     ap.add_argument("uniprot_tsv")
     ap.add_argument("cache")
@@ -144,14 +154,8 @@ def main():
     rng = np.random.default_rng(a.seed)
     sample = sorted(rng.choice(accs, size=min(a.n, len(accs)), replace=False))
 
-    def safe(acc):
-        try:
-            return analyse(acc, a.cache)
-        except Exception as e:
-            return {"acc": acc, "ok": False, "reason": f"{type(e).__name__}: {e}"[:150]}
-
-    with ThreadPoolExecutor(max_workers=a.workers) as ex:
-        rows = list(ex.map(safe, sample))
+    with ProcessPoolExecutor(max_workers=a.workers) as ex:
+        rows = list(ex.map(safe, sample, [a.cache] * len(sample)))
     d = pd.DataFrame(rows)
     d.to_csv(a.out_csv, index=False)
     ok = d[d.ok]

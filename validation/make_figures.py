@@ -94,6 +94,65 @@ def table_pdb(d):
         fh.write("\n".join(lines) + "\n")
 
 
+def fig_domains(a_df):
+    ok = a_df[a_df.ok].copy()
+    fig, (a, b) = plt.subplots(1, 2, figsize=(DOUBLE, 70 * MM), gridspec_kw={"width_ratios": [1, 1.15]})
+    t = ok.ted_domains.clip(upper=5)
+    c = ok["ac_domains_r0.5"].clip(upper=5)
+    tab = pd.crosstab(t, c).reindex(index=range(6), columns=range(6), fill_value=0)
+    for i in range(6):
+        for j in range(6):
+            n = tab.loc[i, j]
+            if n:
+                a.scatter(i, j, s=12 + 5.5 * n, color=NEW if i == j else INK2, alpha=0.85 if i == j else 0.55, lw=0)
+                a.text(i, j, str(n), ha="center", va="center", fontsize=6, color="white" if n > 8 else INK)
+    a.plot([-0.5, 5.5], [-0.5, 5.5], color=INK2, lw=0.6, ls="--", zorder=0)
+    a.set(xlim=(-0.6, 5.6), ylim=(-0.6, 5.6), xlabel="TED domains (high/medium consensus)", ylabel="AlphaCert PAE rigid bodies")
+    a.set_xticks(range(6), ["0", "1", "2", "3", "4", "5+"])
+    a.set_yticks(range(6), ["0", "1", "2", "3", "4", "5+"])
+    a.set_aspect("equal")
+    panel(a, "a")
+
+    rng = np.random.default_rng(1)
+    idx = rng.permutation(len(ok))
+    halves = {"selection half": ok.iloc[idx[:len(ok) // 2]], "test half": ok.iloc[idx[len(ok) // 2:]]}
+    res = ["0.25", "0.5", "1", "2"]
+    x = np.arange(len(res))
+    for k, (name, h) in enumerate(halves.items()):
+        med = [h["ari_r" + r].median() for r in res]
+        q1 = [h["ari_r" + r].quantile(0.25) for r in res]
+        q3 = [h["ari_r" + r].quantile(0.75) for r in res]
+        off = -0.12 if k == 0 else 0.12
+        col, mk = (INK2, "s") if k == 0 else (NEW, "o")
+        b.errorbar(x + off, med, yerr=[np.subtract(med, q1), np.subtract(q3, med)], fmt=mk, color=col, ms=5,
+                   capsize=2, elinewidth=0.8, label=f"{name} (n = {len(h)})")
+    b.set_xticks(x, res)
+    b.set(xlabel="modularity resolution", ylabel="ARI vs TED (median, IQR)", ylim=(-0.05, 1.0))
+    b.axvline(1, color=INK2, lw=0.5, ls=":")
+    b.text(1.05, 0.93, "default (ChimeraX)", fontsize=6.5, color=INK2)
+    b.legend(loc="upper right")
+    panel(b, "b")
+    fig.tight_layout(w_pad=2.5)
+    save(fig, "fig3_domains")
+
+
+def table_afdb(a_df):
+    ok = a_df[a_df.ok]
+    rows = [("Mean pLDDT", (ok.mean_plddt - ok.modelcif_global_plddt).abs().max(), "ModelCIF global metric in the file (2 decimals)"),
+            ("Mean pLDDT", (ok.mean_plddt - ok.api_mean_plddt).abs().max(), "AFDB API (differs from the file by up to 0.04)"),
+            ("Fraction pLDDT $>90$", (ok.vh - ok.api_vh).abs().max(), "AFDB API (3 decimals)"),
+            ("Fraction pLDDT 70--90", (ok.conf - ok.api_conf).abs().max(), "AFDB API (3 decimals)"),
+            ("Fraction pLDDT 50--70", (ok.low - ok.api_low).abs().max(), "AFDB API (3 decimals)"),
+            ("Fraction pLDDT $<50$", (ok.vlow - ok.api_vlow).abs().max(), "AFDB API (3 decimals)"),
+            (r"$\phi$, $\psi$ (degrees)", ok.max_phipsi_diff_deg.max(), "gemmi, every residue")]
+    lines = [r"\begin{tabular}{lrl}", r"\toprule", r"Quantity & maximum absolute difference & reference \\", r"\midrule"]
+    for name, v, ref in rows:
+        lines.append(f"{name} & {v:.1e} & {ref} " + r"\\")
+    lines += [r"\bottomrule", r"\end{tabular}"]
+    with open(os.path.join(TAB, "table_afdb.tex"), "w") as fh:
+        fh.write("\n".join(lines) + "\n")
+
+
 def main():
     for d in (FIG, TAB):
         os.makedirs(d, exist_ok=True)
@@ -102,7 +161,10 @@ def main():
     pdb = pdb[pdb.ok]
     fig_pdb(pdb)
     table_pdb(pdb)
-    print("PDB figures written")
+    afdb = pd.read_csv(os.path.join(RES, "afdb_bench.csv"))
+    fig_domains(afdb)
+    table_afdb(afdb)
+    print("figures written")
 
 
 if __name__ == "__main__":
