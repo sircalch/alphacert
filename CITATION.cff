@@ -8,7 +8,7 @@ authors:
 title: "AlphaCert: An Open-Source Toolkit for Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification of Predicted Protein Structures"
 version: "1.1.0"
 doi: 10.5281/zenodo.22217576
-date-released: 2026-08-31
+date-released: 2026-09-30
 url: "https://github.com/sircalch/alphacert"
 repository-code: "https://github.com/sircalch/alphacert"
 keywords:
