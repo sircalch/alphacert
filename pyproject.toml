@@ -72,4 +72,7 @@ Changelog = "https://github.com/sircalch/alphacert/blob/main/CHANGELOG.md"
 [tool.setuptools.packages.find]
 include = ["alphacert*"]
 
+[tool.setuptools.package-data]
+alphacert = ["data/*.npz", "data/*.txt"]
+
 

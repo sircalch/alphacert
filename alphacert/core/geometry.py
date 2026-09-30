@@ -7,8 +7,10 @@ Notes on scope
   bonds apart) that overlap by more than 0.4 A of their van der Waals radii, per 1000 heavy atoms;
   N/O pairs count only below 2.5 A (possible hydrogen bonds).
   It is NOT the MolProbity clashscore, which is computed with explicit hydrogens by Probe.
-* Ramachandran regions are approximate rectangular regions for the general case, not the
-  MolProbity Top8000 contours; use MolProbity/PHENIX for publication-grade numbers.
+* Ramachandran classification uses the MolProbity Top8000 percentile contours (Richardson Lab,
+  CC-BY 4.0; Williams et al., Protein Sci. 27, 293, 2018) for the six MolProbity residue categories
+  (general, Gly, cis-Pro, trans-Pro, pre-Pro, Ile/Val) with the MolProbity thresholds. Versions
+  before 1.1.0 used approximate rectangular regions that overestimated outliers several-fold.
 """
 
 from typing import List, Dict, Any, Optional, Tuple
@@ -55,20 +57,58 @@ def _calc_dihedral(p1: np.ndarray, p2: np.ndarray, p3: np.ndarray, p4: np.ndarra
     return float(np.degrees(np.arctan2(y, x)))
 
 
-def _classify_ramachandran(phi: float, psi: float) -> str:
-    """Classifies a (phi, psi) pair into approximate Favored, Allowed, or Outlier regions."""
-    # Right-handed helix: phi in [-160, -35], psi in [-70, 10]
-    # Beta region: phi in [-180, -50], psi in [80, 180] or [-180, -160]
-    # Left-handed helix: phi in [30, 90], psi in [0, 80]
-    if (-160 <= phi <= -35 and -70 <= psi <= 10) or \
-       (-180 <= phi <= -50 and 80 <= psi <= 180) or \
-       (-180 <= phi <= -50 and -180 <= psi <= -160) or \
-       (30 <= phi <= 90 and 0 <= psi <= 80):
+_RAMA_GRIDS = None
+# MolProbity thresholds on the Top8000 percentile contours (Williams et al., Protein Sci. 2018):
+# favored >= 2%; outlier < 0.05% for the general case and < 0.1% for the other categories
+RAMA_FAVORED = 0.02
+RAMA_OUTLIER = {"general": 0.0005, "gly": 0.001, "cispro": 0.001, "transpro": 0.001,
+                "prepro": 0.001, "ileval": 0.001}
+
+
+def _rama_grids():
+    global _RAMA_GRIDS
+    if _RAMA_GRIDS is None:
+        import os
+        path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "top8000_rama.npz")
+        with np.load(path) as z:
+            _RAMA_GRIDS = {k: z[k].astype(float) for k in z.files}
+    return _RAMA_GRIDS
+
+
+def rama_category(res_name: str, next_res_name: str, omega_prev: Optional[float]) -> str:
+    """MolProbity Ramachandran category of a residue."""
+    if res_name == "GLY":
+        return "gly"
+    if res_name == "PRO":
+        return "cispro" if (omega_prev is not None and not np.isnan(omega_prev) and abs(omega_prev) < 30.0) else "transpro"
+    if next_res_name == "PRO":
+        return "prepro"
+    if res_name in ("ILE", "VAL"):
+        return "ileval"
+    return "general"
+
+
+def rama_percentile(phi: float, psi: float, category: str = "general") -> float:
+    """Bilinear interpolation of the periodic Top8000 percentile grid (2-degree bins centred at -179, -177, ...)."""
+    g = _rama_grids()[category]
+    x = (phi + 179.0) / 2.0
+    y = (psi + 179.0) / 2.0
+    i0, j0 = int(np.floor(x)), int(np.floor(y))
+    fx, fy = x - i0, y - j0
+    i0, j0 = i0 % 180, j0 % 180
+    i1, j1 = (i0 + 1) % 180, (j0 + 1) % 180
+    return float((1 - fx) * (1 - fy) * g[i0, j0] + fx * (1 - fy) * g[i1, j0]
+                 + (1 - fx) * fy * g[i0, j1] + fx * fy * g[i1, j1])
+
+
+def _classify_ramachandran(phi: float, psi: float, category: str = "general") -> str:
+    """FAVORED / ALLOWED / OUTLIER from the Top8000 contours of the residue's category."""
+    p = rama_percentile(phi, psi, category)
+    if p >= RAMA_FAVORED:
         return "FAVORED"
-    elif (-180 <= phi <= 0 and -100 <= psi <= 180) or (0 <= phi <= 180 and -60 <= psi <= 120):
-        return "ALLOWED"
-    else:
+    if p < RAMA_OUTLIER[category]:
         return "OUTLIER"
+    return "ALLOWED"
 
 
 def _bond_graph_exclusions(coords: np.ndarray, elements: List[str], tree: cKDTree, max_bonds: int = 3) -> set:
@@ -192,7 +232,10 @@ def evaluate_stereochemistry(
                 continue
             phi_psi_pairs.append((phi, psi))
 
-            reg = _classify_ramachandran(phi, psi)
+            omega_prev = (_calc_dihedral(np.asarray(prev_res["CA"]), c_prev, n_curr, ca_curr)
+                          if "CA" in prev_res else None)
+            cat = rama_category(curr_res.get("res_name", ""), next_res.get("res_name", ""), omega_prev)
+            reg = _classify_ramachandran(phi, psi, cat)
             if reg == "FAVORED":
                 n_favored += 1
             elif reg == "ALLOWED":

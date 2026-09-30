@@ -1,0 +1,6 @@
+Ramachandran percentile contour grids (top8000_rama.npz) are converted from the Top8000
+datasets of the Richardson Lab, Duke University (https://github.com/rlabduke/reference_data,
+Top8000/Top8000_ramachandran_pct_contour_grids), licensed CC-BY 4.0 (see TOP8000_LICENSE_CC-BY-4.0.txt).
+Reference: Williams et al., MolProbity: More and better reference data for improved all-atom
+structure validation, Protein Science 27, 293-315 (2018), doi:10.1002/pro.3330.
+The grids were converted to NumPy arrays (180 x 180 bins of 2 degrees) without changing the values.

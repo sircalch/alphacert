@@ -22,8 +22,13 @@ def test_ramachandran_classification():
     assert _classify_ramachandran(-60.0, -45.0) == "FAVORED"
     # Beta-sheet: phi=-120, psi=130 -> FAVORED
     assert _classify_ramachandran(-120.0, 130.0) == "FAVORED"
-    # Outlier: phi=60, psi=-120
-    assert _classify_ramachandran(60.0, -120.0) == "OUTLIER"
+    # Outlier in the Top8000 general contours: phi=100, psi=-100 (and phi=psi=0)
+    assert _classify_ramachandran(100.0, -100.0) == "OUTLIER"
+    assert _classify_ramachandran(0.0, 0.0) == "OUTLIER"
+    # phi=60, psi=-120 is allowed (not favored) for a general residue in Top8000
+    assert _classify_ramachandran(60.0, -120.0) == "ALLOWED"
+    # Gly and Pro use their own contours: left-handed region is favored for Gly
+    assert _classify_ramachandran(80.0, 10.0, "gly") == "FAVORED"
 
 
 def test_stereochemistry_evaluation():

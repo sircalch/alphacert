@@ -42,6 +42,12 @@ references are independent of AlphaCert:
   by residue number (optionally with a chain, `A:248`), and residues that do not exist are reported.
 - The generated methods text reports the installed version instead of a fixed "v1.0.0".
 
+- **Ramachandran.** The approximate rectangular regions are replaced by the MolProbity Top8000
+  percentile contours (Richardson Lab, CC-BY 4.0; Williams et al. 2018), using the six MolProbity
+  categories (general, Gly, cis-Pro, trans-Pro, pre-Pro, Ile/Val) and the MolProbity thresholds.
+  On X-ray structures the outlier percentage now matches the wwPDB/MolProbity value, where the
+  rectangles overestimated it several-fold.
+
 ### Added
 - `pae_domains()` and `count_heavy_atom_clashes()`.
 - A `plddt` argument in `evaluate_pae_matrix` and a `domains` field in `PAEAnalysisResult`.
