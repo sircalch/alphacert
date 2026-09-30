@@ -153,6 +153,55 @@ def table_afdb(a_df):
         fh.write("\n".join(lines) + "\n")
 
 
+def table_s_resolution(a_df):
+    ok = a_df[a_df.ok]
+    lines = [r"\begin{tabular}{lrrrrr}", r"\toprule",
+             r"Resolution & median ARI [IQR] & equal count & within one & fewer & more \\", r"\midrule"]
+    for r in ("0.25", "0.5", "1", "2"):
+        c, t, ari = ok["ac_domains_r" + r], ok.ted_domains, ok["ari_r" + r]
+        lines.append(f"{r} & {ari.median():.2f} [{ari.quantile(0.25):.2f}, {ari.quantile(0.75):.2f}] & "
+                     f"{(c == t).mean():.1%} & {((c - t).abs() <= 1).mean():.1%} & {(c < t).mean():.1%} & "
+                     f"{(c > t).mean():.1%} " + r"\\")
+    lines += [r"\bottomrule", r"\end{tabular}"]
+    with open(os.path.join(TAB, "table_s_resolution.tex"), "w") as fh:
+        fh.write("\n".join(lines).replace("%", r"\%") + "\n")
+
+
+def table_s_tedcount(a_df):
+    ok = a_df[a_df.ok]
+    lines = [r"\begin{tabular}{lrrrrr}", r"\toprule",
+             r"TED domains & models & equal & fewer & more & median ARI \\", r"\midrule"]
+    for k, g in ok.groupby(ok.ted_domains.clip(upper=4)):
+        c, t = g["ac_domains_r0.5"], g.ted_domains
+        lab = "4 or more" if k == 4 else str(k)
+        lines.append(f"{lab} & {len(g)} & {(c == t).mean():.0%} & {(c < t).mean():.0%} & {(c > t).mean():.0%} & "
+                     f"{g['ari_r0.5'].median():.2f} " + r"\\")
+    lines += [r"\bottomrule", r"\end{tabular}"]
+    with open(os.path.join(TAB, "table_s_tedcount.tex"), "w") as fh:
+        fh.write("\n".join(lines).replace("%", r"\%") + "\n")
+
+
+def table_s_pdb_entries(d):
+    head = [r"\begin{longtable}{lrrrrrr}", r"\toprule",
+            r"PDB & resolution (\AA) & residues & clash (AC) & clashscore (MP) & rama out.\ \% (AC) & rama out.\ \% (MP) \\",
+            r"\midrule", r"\endhead", r"\bottomrule", r"\endfoot"]
+    body = [f"{r.pdb} & {r.resolution:.2f} & {r.n_res} & {r.ac_clashscore:.1f} & {r.mp_clashscore:.1f} & "
+            f"{r.ac_rama_out_pct:.2f} & {r.mp_rama_out_pct:.2f} " + r"\\" for r in d.sort_values("pdb").itertuples()]
+    with open(os.path.join(TAB, "table_s_pdb_entries.tex"), "w") as fh:
+        fh.write("\n".join(head + body + [r"\end{longtable}"]) + "\n")
+
+
+def table_s_afdb_entries(a_df):
+    ok = a_df[a_df.ok].sort_values("acc").rename(columns={"ac_domains_r0.5": "ac05", "ari_r0.5": "ari05"})
+    head = [r"\begin{longtable}{lrrrrr}", r"\toprule",
+            r"UniProt & residues & mean pLDDT & TED domains & rigid bodies (r = 0.5) & ARI \\",
+            r"\midrule", r"\endhead", r"\bottomrule", r"\endfoot"]
+    body = [f"{r.acc} & {r.n_res} & {r.mean_plddt:.2f} & {r.ted_domains} & {r.ac05} & "
+            f"{r.ari05:.2f} " + r"\\" for r in ok.itertuples()]
+    with open(os.path.join(TAB, "table_s_afdb_entries.tex"), "w") as fh:
+        fh.write("\n".join(head + body + [r"\end{longtable}"]) + "\n")
+
+
 def main():
     for d in (FIG, TAB):
         os.makedirs(d, exist_ok=True)
@@ -164,6 +213,10 @@ def main():
     afdb = pd.read_csv(os.path.join(RES, "afdb_bench.csv"))
     fig_domains(afdb)
     table_afdb(afdb)
+    table_s_resolution(afdb)
+    table_s_tedcount(afdb)
+    table_s_afdb_entries(afdb)
+    table_s_pdb_entries(pdb)
     print("figures written")
 
 
