@@ -212,16 +212,16 @@ def run_assess(args):
 
 def print_citation():
     bib = """@software{monreal2026alphacert,
-  author = {Monreal-Hern\\'andez, Andre},
+  author = {Monreal-Hernández, Andrés},
   title = {{AlphaCert: An Open-Source Toolkit for Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification of Predicted Protein Structures}},
   year = {2026},
-  version = {1.0.0},
+  version = {""" + __version__ + """},
   publisher = {Zenodo},
   url = {https://github.com/sircalch/alphacert}
 }"""
     print("\nIf you use AlphaCert in your publications, please cite:\n")
     print("APA Style:")
-    print("Monreal-Hernández, A. (2026). AlphaCert: An Open-Source Toolkit for Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification of Predicted Protein Structures (v1.0.0). Zenodo. https://github.com/sircalch/alphacert\n")
+    print("Monreal-Hernández, A. (2026). AlphaCert: An Open-Source Toolkit for Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification of Predicted Protein Structures (v" + __version__ + "). Zenodo. https://github.com/sircalch/alphacert\n")
     print("BibTeX:")
     print(bib)
     print()

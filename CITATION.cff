@@ -6,9 +6,9 @@ authors:
     orcid: "https://orcid.org/0009-0009-1207-8597"
     affiliation: "Universidad Estatal de Sonora"
 title: "AlphaCert: An Open-Source Toolkit for Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification of Predicted Protein Structures"
-version: "1.1.0"
+version: 1.1.1
 doi: 10.5281/zenodo.22217576
-date-released: 2026-09-30
+date-released: 2026-11-20
 url: "https://github.com/sircalch/alphacert"
 repository-code: "https://github.com/sircalch/alphacert"
 keywords:

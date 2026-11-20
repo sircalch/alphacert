@@ -107,10 +107,10 @@ def generate_alphacert_manuscript_assets(
     # 3. BibTeX Citation
     bib_path = os.path.join(output_dir, "citation.bib")
     bib_content = """@software{monreal2026alphacert,
-  author = {Monreal-Hern\\'andez, Andre},
+  author = {Monreal-Hernández, Andrés},
   title = {{AlphaCert: An Open-Source Toolkit for Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification of Predicted Protein Structures}},
   year = {2026},
-  version = {1.0.0},
+  version = {""" + __version__ + """},
   publisher = {Zenodo},
   url = {https://github.com/sircalch/alphacert}
 }

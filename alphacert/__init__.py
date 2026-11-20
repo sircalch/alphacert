@@ -3,8 +3,8 @@ AlphaCert: Automated Quality-Control, pLDDT/PAE Assessment, and Stereochemical
 Certification for Predicted Protein Structures (AlphaFold2/3, ColabFold, ESMFold).
 """
 
-__version__ = "1.1.0"
-__author__ = "Andres Monreal-Hernández"
+__version__ = "1.1.1"
+__author__ = "Andrés Monreal-Hernández"
 __license__ = "MIT"
 
 from alphacert.core.plddt import (

@@ -138,10 +138,10 @@ If you use AlphaCert in your research, please cite:
 
 ```bibtex
 @software{monreal2026alphacert,
-  author = {Monreal-Hern{\'a}ndez, Andre},
+  author = {Monreal-Hernández, Andrés},
   title = {{AlphaCert: An Open-Source Toolkit for Quality-Control, pLDDT/PAE Assessment, and Stereochemical Certification of Predicted Protein Structures}},
   year = {2026},
-  version = {1.0.0},
+  version = {1.1.1},
   publisher = {Zenodo},
   url = {https://github.com/sircalch/alphacert}
 }
