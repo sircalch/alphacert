@@ -2,13 +2,13 @@
 
 If AlphaCert helps your research, please cite it. The repository's [`CITATION.cff`](https://github.com/sircalch/alphacert/blob/master/CITATION.cff) is the canonical record; GitHub's "Cite this repository" button uses it.
 
-Version 1.1.1 (2026-11-20) is archived on Zenodo with the DOI [10.5281/zenodo.22217576](https://doi.org/10.5281/zenodo.22217576).
+Version 1.1.2 (2026-11-20) is archived on Zenodo with the DOI [10.5281/zenodo.22217576](https://doi.org/10.5281/zenodo.22217576).
 
 ```bibtex
-@software{alphacert_1_1_1,
+@software{alphacert_1_1_2,
   author  = {Monreal-Hernández, Andrés},
   title   = {AlphaCert},
-  version = {1.1.1},
+  version = {1.1.2},
   year    = {2026},
   doi     = {10.5281/zenodo.22217576},
   url     = {https://github.com/sircalch/alphacert}
