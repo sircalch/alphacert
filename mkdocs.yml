@@ -1,0 +1,61 @@
+site_name: AlphaCert
+site_description: "AlphaCert: quality control of predicted protein structures (pLDDT, PAE and stereochemistry)."
+site_url: https://sircalch.github.io/alphacert/
+repo_url: https://github.com/sircalch/alphacert
+repo_name: sircalch/alphacert
+edit_uri: edit/master/docs/
+copyright: Copyright &copy; 2026 Andrés Monreal Hernández · MIT License
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+  palette:
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            show_source: false
+            show_root_heading: true
+            heading_level: 3
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - API reference: api.md
+  - Citing AlphaCert: citing.md
+  - Support and contributing: support.md
