@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Documentation site with installation, API reference and citation guidance: <https://sircalch.github.io/alphacert/>.
+- Support and governance statement in `CONTRIBUTING.md`; `CODE_OF_CONDUCT.md` and `SECURITY.md`; README links to all of them.
+
+### Fixed
+- The "Changelog" project URL pointed to a `main` branch that does not exist; it now points to `master`.
+
 ## 1.1.0 (2026-09-27)
 
 Validated against real AlphaFold DB v6 models: haemoglobin α (P69905) and p53 (P04637). The

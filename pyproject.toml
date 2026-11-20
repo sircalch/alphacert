@@ -57,16 +57,21 @@ dev = [
     "build>=0.10.0",
     "twine>=4.0.0"
 ]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.26"
+]
 
 [project.scripts]
 alphacert = "alphacert.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/sircalch/alphacert"
-Documentation = "https://github.com/sircalch/alphacert#readme"
+Documentation = "https://sircalch.github.io/alphacert/"
 Repository = "https://github.com/sircalch/alphacert.git"
 "Bug Tracker" = "https://github.com/sircalch/alphacert/issues"
-Changelog = "https://github.com/sircalch/alphacert/blob/main/CHANGELOG.md"
+Changelog = "https://github.com/sircalch/alphacert/blob/master/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 include = ["alphacert*"]
